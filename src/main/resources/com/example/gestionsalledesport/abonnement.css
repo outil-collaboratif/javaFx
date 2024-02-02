@@ -1,0 +1,50 @@
+/* abonnement.css */
+
+#root-container {
+    -fx-background-color: #f0f0f0; /* Background color */
+}
+
+.form-container {
+    -fx-background-color: #ffffff; /* Form background color */
+    -fx-padding: 20px; /* Padding */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-border-color: #cccccc; /* Border color */
+    -fx-border-width: 1px; /* Border width */
+}
+
+.form-label {
+    -fx-font-size: 14px; /* Label font size */
+    -fx-text-fill: #333333; /* Label text color */
+}
+
+.form-textfield {
+    -fx-font-size: 14px; /* Textfield font size */
+    -fx-pref-width: 200px; /* Textfield width */
+}
+
+.action-button {
+    -fx-background-color: #4CAF50; /* Button background color */
+    -fx-text-fill: white; /* Button text color */
+    -fx-font-weight: bold; /* Button font weight */
+    -fx-padding: 8px 14px; /* Button padding */
+    -fx-font-size: 14px; /* Button font size */
+    -fx-border-radius: 5px; /* Button rounded corners */
+    -fx-border-color: transparent; /* Button border color */
+}
+
+.action-button:hover {
+    -fx-background-color: #45a049; /* Hover background color */
+}
+
+.table-view {
+    -fx-border-color: #cccccc; /* Table border color */
+    -fx-border-width: 1px; /* Table border width */
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Alternate row color */
+}
+
+.table-column {
+    -fx-alignment: CENTER; /* Table column alignment */
+}

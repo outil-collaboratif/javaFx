@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.gestionsalledesport.controllers.AbonnementController"
+      stylesheets="@abonnement.css">
+
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="30"/>
+    </padding>
+
+    <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
+        <children>
+            <Label text="Date:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Durée:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Tarif:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="tarifField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="User ID:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="userIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+        </children>
+    </VBox>
+
+    <HBox spacing="15" style="-fx-background-color: #e0e0ea; -fx-border-radius: 10px; -fx-padding: 15px;">
+        <children>
+            <Button text="Create" onAction="#createAbonnement" styleClass="action-button"/>
+            <Button text="Update" onAction="#updateAbonnement" styleClass="action-button"/>
+            <Button text="Delete" onAction="#deleteAbonnement" styleClass="action-button"/>
+        </children>
+    </HBox>
+
+    <TableView fx:id="abonnementsTable" styleClass="table-view">
+        <columns>
+            <TableColumn text="ID" prefWidth="50">
+                <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Date" prefWidth="150">
+                <cellValueFactory><PropertyValueFactory property="date"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Durée" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="durée"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Tarif" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="tarif"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="User Details" prefWidth="200">
+                <cellValueFactory>
+                    <PropertyValueFactory property="userDetails"/>
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+
+    <Button text="Load Abonnements" onAction="#loadAbonnements" styleClass="action-button" style="-fx-font-size: 16px;"/>
+</VBox>

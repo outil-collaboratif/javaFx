@@ -15,9 +15,14 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Long getId() {
-        return id;
+    public User(long userId) {
+        this.id = userId;
     }
+
+    public Long getId() {
+        return id != null ? id : 0L;
+    }
+
 
     public void setId(Long id) {
         this.id = id;

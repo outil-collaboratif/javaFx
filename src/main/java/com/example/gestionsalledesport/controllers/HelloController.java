@@ -1,4 +1,4 @@
-package com.example.gestionsalledesport;
+package com.example.gestionsalledesport.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

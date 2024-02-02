@@ -63,4 +63,7 @@ public class Abonnement {
         this.tarif = tarif;
         this.user = user;
     }
+    public String getUserDetails() {
+        return user != null ? "ID: " + user.getId() + ", Nom: " + user.getNom() + ", Prenom: " + user.getPrenom() + ", Email: " + user.getEmail() + ", Birthday: " + user.getBirthday() : "";
+    }
 }
