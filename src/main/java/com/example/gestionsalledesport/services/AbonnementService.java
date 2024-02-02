@@ -49,7 +49,7 @@ public class AbonnementService {
 
         abonnementService.createAbonnementTable();
 
-        User exampleUser = new User(1L, "John", "Doe", "john.doe@example.com", "1990-01-01");
+        User exampleUser = new User(1L, "John", "Doe", "john.doe@example.com", "doepassword","1990-01-01");
 
         // Example Abonnement
         Abonnement exampleAbonnement = new Abonnement(

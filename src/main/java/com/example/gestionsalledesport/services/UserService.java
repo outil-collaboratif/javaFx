@@ -23,6 +23,7 @@ public class UserService {
                 "nom VARCHAR(50) NOT NULL," +
                 "prenom VARCHAR(50) NOT NULL," +
                 "email VARCHAR(50) UNIQUE NOT NULL," +
+                "password VARCHAR(50) NOT NULL," +
                 "birthday VARCHAR(20) NOT NULL" +
                 ")";
         dao.executeQuery(createUserTableSQL);
@@ -107,14 +108,37 @@ public class UserService {
             ex.printStackTrace();
         }
     }
+    public boolean login(String email, String password) {
+        String selectUserSQL = "SELECT * FROM users WHERE email = ?";
 
+        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(selectUserSQL)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String hashedPasswordFromDB = resultSet.getString("password");
+                    if (BCrypt.checkpw(password, hashedPasswordFromDB)) {
+                        System.out.println("Login successful. Welcome, " + email + "!");
+                        return true;
+                    } else {
+                        System.out.println("Invalid password. Please try again.");
+                    }
+                } else {
+                    System.out.println("User not found. Please check your email.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         UserService userService = new UserService();
 
         userService.createUserTable();
 
-        User user = new User(null, "hama", "hama", "hama.doe@example.com", "1990-01-01");
+        User user = new User(null, "username", "userlastname", "user@example.com", "userpassword","1990-01-01");
         userService.insertUser(user);
 
         Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"));
@@ -122,5 +146,13 @@ public class UserService {
 
         Coach coach = new Coach(null, "Coach", "Trainer", "coach@example.com", "1975-01-01", "Fitness");
         userService.insertCoach(coach);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your email: ");
+        String userEmail = scanner.nextLine();
+
+        System.out.print("Enter your password: ");
+        String userPassword = scanner.nextLine();
+        userService.login(userEmail, userPassword);
     }
 }
