@@ -35,8 +35,10 @@ public class UserService {
                 "prenom VARCHAR(50) NOT NULL," +
                 "email VARCHAR(50) UNIQUE NOT NULL," +
                 "birthday VARCHAR(20) NOT NULL," +
-                "admin_id DECIMAL NOT NULL" + // Adjust the type based on your database
+                "admin_id DECIMAL NOT NULL," + // Add a comma here
+                "password VARCHAR(50)" + // Add the password column definition
                 ")";
+
         dao.executeQuery(createAdminTableSQL);
         System.out.println("Admin table created successfully.");
 
@@ -52,7 +54,6 @@ public class UserService {
         dao.executeQuery(createCoachTableSQL);
         System.out.println("Coach table created successfully.");
     }
-
 
     public void insertUser(User user) {
         String insertUserSQL = "INSERT INTO users (nom, prenom, email, birthday) VALUES (?, ?, ?, ?)";
@@ -71,17 +72,18 @@ public class UserService {
     }
 
     public void insertAdmin(Admin admin) {
-        String insertAdminSQL = "INSERT INTO admins (nom, prenom, email, birthday, admin_id) VALUES (?, ?, ?, ?, ?)";
+        String insertAdminSQL = "INSERT INTO admins (nom, prenom, email, birthday, admin_id,password) VALUES (?, ?, ?, ?,?,?)";
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertAdminSQL)) {
             preparedStatement.setString(1, admin.getNom());
             preparedStatement.setString(2, admin.getPrenom());
             preparedStatement.setString(3, admin.getEmail());
             preparedStatement.setString(4, admin.getBirthday());
+            preparedStatement.setString(5, admin.getPassword());
 
             // Convert BigInteger to BigDecimal for insertion
             BigDecimal adminIdDecimal = new BigDecimal(admin.getAdminId());
-            preparedStatement.setBigDecimal(5, adminIdDecimal);
+            preparedStatement.setBigDecimal(6, adminIdDecimal);
 
             preparedStatement.executeUpdate();
             System.out.println("Admin inserted successfully.");
@@ -89,7 +91,6 @@ public class UserService {
             ex.printStackTrace();
         }
     }
-
 
     public void insertCoach(Coach coach) {
         String insertCoachSQL = "INSERT INTO coaches (nom, prenom, email, birthday, specialite) VALUES (?, ?, ?, ?, ?)";
@@ -108,17 +109,20 @@ public class UserService {
         }
     }
 
-
     public static void main(String[] args) {
         UserService userService = new UserService();
 
         userService.createUserTable();
 
-        User user = new User(null, "hama", "hama", "hama.doe@example.com", "1990-01-01");
+        User user = new User(null, "baraket", "chaima", "chaima@gmail.com", "1999-03-08");
         userService.insertUser(user);
 
-        Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"));
+        Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"),
+                "123");
         userService.insertAdmin(admin);
+        Admin admin2 = new Admin(null, "Baraket", "Chaima", "chaima@gmail.com", "1999-03-08", new BigInteger("12345"),
+                "123");
+        userService.insertAdmin(admin2);
 
         Coach coach = new Coach(null, "Coach", "Trainer", "coach@example.com", "1975-01-01", "Fitness");
         userService.insertCoach(coach);

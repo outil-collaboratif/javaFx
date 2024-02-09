@@ -109,6 +109,7 @@ public class AbonnementService {
                         resultSet.getString("users.prenom"),
                         resultSet.getString("users.email"),
                         resultSet.getString("users.birthday")
+                        
                 );
 
                 // Construct Abonnement object
