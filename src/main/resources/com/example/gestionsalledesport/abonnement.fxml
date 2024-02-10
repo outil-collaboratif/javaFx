@@ -19,25 +19,37 @@
 
     <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
         <children>
+            <!-- Date -->
             <Label text="Date:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+            <TextField fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <promptText>Enter date</promptText>
+            </TextField>
 
+            <!-- Durée -->
             <Label text="Durée:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+            <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <promptText>Enter duration</promptText>
+            </TextField>
 
+            <!-- Tarif -->
             <Label text="Tarif:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="tarifField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+            <TextField fx:id="tarifField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <promptText>Enter tarif</promptText>
+            </TextField>
 
+            <!-- User ID -->
             <Label text="User ID:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="userIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+            <TextField fx:id="userIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <promptText>Enter user ID</promptText>
+            </TextField>
         </children>
     </VBox>
 
     <HBox spacing="15" style="-fx-background-color: #e0e0ea; -fx-border-radius: 10px; -fx-padding: 15px;">
         <children>
-            <Button text="Create" onAction="#createAbonnement" styleClass="action-button"/>
-            <Button text="Update" onAction="#updateAbonnement" styleClass="action-button"/>
-            <Button text="Delete" onAction="#deleteAbonnement" styleClass="action-button"/>
+            <Button fx:id="createButton" text="Create" onAction="#createAbonnement" styleClass="action-button"/>
+            <Button fx:id="updateButton" text="Update" onAction="#updateAbonnement" styleClass="action-button"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#deleteAbonnement" styleClass="action-button"/>
         </children>
     </HBox>
 
