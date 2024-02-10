@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List;  
 
 public class AbonnementService {
     private final DAO dao;
@@ -47,7 +47,6 @@ public class AbonnementService {
             if (abonnement.getUser() != null) {
                 preparedStatement.setLong(4, abonnement.getUser().getId());
             } else {
-                // Handle the case where User is null (e.g., set user_id to a default value)
                 preparedStatement.setNull(4, Types.NULL);
             }
 
@@ -111,7 +110,6 @@ public class AbonnementService {
                         resultSet.getString("users.birthday")
                 );
 
-                // Construct Abonnement object
                 Abonnement abonnement = new Abonnement(id, date, duree, tarif, user);
 
                 abonnements.add(abonnement);
@@ -122,8 +120,5 @@ public class AbonnementService {
 
         return abonnements;
     }
-
-
-
 }
 

@@ -3,13 +3,25 @@ package com.example.gestionsalledesport.controllers;
 import com.example.gestionsalledesport.models.Abonnement;
 import com.example.gestionsalledesport.models.User;
 import com.example.gestionsalledesport.services.AbonnementService;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 import java.util.List;
 
 public class AbonnementController {
+
+    @FXML
+    private Button createButton;
+
+    @FXML
+    private Button updateButton;
+
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private TextField dateField;
@@ -25,6 +37,11 @@ public class AbonnementController {
 
     @FXML
     private TableView<Abonnement> abonnementsTable;
+
+    private BooleanBinding isDateValid;
+    private BooleanBinding isDureeValid;
+    private BooleanBinding isTarifValid;
+    private BooleanBinding isUserIdValid;
 
     private final AbonnementService abonnementService = new AbonnementService();
 
@@ -77,5 +94,43 @@ public class AbonnementController {
         dureeField.clear();
         tarifField.clear();
         userIdField.clear();
+    }
+
+    // Inside initialize method or constructor
+    public void initialize() {
+        isDateValid = Bindings.createBooleanBinding(() -> isValidDate(dateField.getText()), dateField.textProperty());
+        isDureeValid = Bindings.createBooleanBinding(() -> isValidDuree(dureeField.getText()), dureeField.textProperty());
+        isTarifValid = Bindings.createBooleanBinding(() -> isValidTarif(tarifField.getText()), tarifField.textProperty());
+        isUserIdValid = Bindings.createBooleanBinding(() -> isValidUserId(userIdField.getText()), userIdField.textProperty());
+
+        createButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
+        updateButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
+    }
+
+    // Define your validation methods
+    private boolean isValidDate(String text) {
+        return !text.isEmpty();
+    }
+
+    private boolean isValidDuree(String text) {
+        return !text.isEmpty();
+    }
+
+    private boolean isValidTarif(String text) {
+        try {
+            Double.parseDouble(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidUserId(String text) {
+        try {
+            Long.parseLong(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
