@@ -8,7 +8,9 @@
 <?import javafx.geometry.Insets?>
 
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.gestionsalledesport.controllers.LoginController">
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.gestionsalledesport.controllers.LoginController" >
+    <prefWidth>800</prefWidth>
+    <prefHeight>600</prefHeight>
     <padding>
         <Insets top="50" right="50" bottom="50" left="50"/>
     </padding>

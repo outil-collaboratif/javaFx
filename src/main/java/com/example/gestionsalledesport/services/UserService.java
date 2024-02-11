@@ -7,7 +7,10 @@ import com.example.gestionsalledesport.models.User;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
     private final DAO dao;
@@ -66,6 +69,71 @@ public class UserService {
 
             preparedStatement.executeUpdate();
             System.out.println("User inserted successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String selectUsersSQL = "SELECT * FROM users";
+
+        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(selectUsersSQL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String nom = resultSet.getString("nom");
+                String prenom = resultSet.getString("prenom");
+                String email = resultSet.getString("email");
+                String birthday = resultSet.getString("birthday");
+
+                User user = new User(id, nom, prenom, email, birthday);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return users;
+    }
+
+    public void deleteUser(long userId) {
+        // First, delete related abonnements
+        String deleteAbonnementsSQL = "DELETE FROM abonnements WHERE user_id = ?";
+    
+        try (PreparedStatement abonnementsStatement = dao.getConnection().prepareStatement(deleteAbonnementsSQL)) {
+            abonnementsStatement.setLong(1, userId);
+            abonnementsStatement.executeUpdate();
+            System.out.println("Abonnements of the user deleted successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete abonnements of the user", e);
+        }
+    
+        // After deleting related abonnements, delete the user
+        String deleteUserSQL = "DELETE FROM users WHERE id = ?";
+    
+        try (PreparedStatement userStatement = dao.getConnection().prepareStatement(deleteUserSQL)) {
+            userStatement.setLong(1, userId);
+            userStatement.executeUpdate();
+            System.out.println("User deleted successfully.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete the user", e);
+        }
+    }
+    
+
+    public void updateUser(User user) {
+        String updateUserSQL = "UPDATE users SET nom = ?, prenom = ?, email = ?, birthday = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(updateUserSQL)) {
+            preparedStatement.setString(1, user.getNom());
+            preparedStatement.setString(2, user.getPrenom());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getBirthday());
+            preparedStatement.setLong(5, user.getId());
+
+            preparedStatement.executeUpdate();
+            System.out.println("User updated successfully.");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

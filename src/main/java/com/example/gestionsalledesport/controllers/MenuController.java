@@ -8,21 +8,34 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.example.gestionsalledesport.HelloApplication;
+import com.example.gestionsalledesport.services.StatisticsService;
 
 import java.io.IOException;
 
 public class MenuController {
     @FXML
     private Label userNameLabel;
+    @FXML
+    private Label totalAbonnementsLabel;
+    @FXML
+    private Label activeAbonnementsLabel;
+    @FXML
+    private Label totalUsersLabel;
+    @FXML
+    private Label activeUsersLabel;
+    @FXML
+    private Label totalCoachesLabel;
 
     private String nom;
     private String prenom;
+    private final StatisticsService statisticsService = new StatisticsService();
 
     // Update the username label when the controller is initialized
     public void initialize() {
         if (nom != null && prenom != null) {
             userNameLabel.setText("Logged in as: " + nom + " " + prenom);
         }
+        updateStatisticsLabels();
     }
 
     // Setter method to set the logged-in user's name
@@ -46,6 +59,11 @@ public class MenuController {
         navigateToInterface("cours.fxml");
     }
 
+    // Method to navigate to the Gestion des cours interface
+    public void addNewUser(ActionEvent event) {
+        navigateToInterface("add_user.fxml");
+    }
+
     // Generic method to navigate to any interface based on FXML file name
     private void navigateToInterface(String fxmlFileName) {
         try {
@@ -53,7 +71,7 @@ public class MenuController {
             Parent root = loader.load();
 
             // Pass the logged-in user's name to the controller of the next scene
-            if (fxmlFileName.equals("abonnement.fxml") || fxmlFileName.equals("cours.fxml")) {
+            if (fxmlFileName.equals("abonnement.fxml") || fxmlFileName.equals("cours.fxml") || fxmlFileName.equals("add_user.fxml")) {
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) userNameLabel.getScene().getWindow();
                 stage.setScene(scene);
@@ -61,5 +79,12 @@ public class MenuController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateStatisticsLabels() {
+        totalAbonnementsLabel.setText("Total Abonnements: " + statisticsService.getTotalAbonnements());
+        activeAbonnementsLabel.setText("Active Abonnements: " + statisticsService.getActiveAbonnements());
+        totalUsersLabel.setText("Total Users: " + statisticsService.getTotalUsers());
+        totalCoachesLabel.setText("Total Coaches: " + statisticsService.getTotalCoaches());
     }
 }

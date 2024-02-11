@@ -11,10 +11,15 @@
 <VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.gestionsalledesport.controllers.AbonnementController"
       stylesheets="@abonnement.css">
-
+      <prefWidth>800</prefWidth>
+      <prefHeight>600</prefHeight>
     <padding>
         <Insets bottom="30" left="30" right="30" top="30"/>
     </padding>
+
+    <HBox alignment="TOP_LEFT">
+        <Button text="Return to Dashboard" onAction="#returnToMenu"/>
+    </HBox>
 
     <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
         <children>
@@ -63,4 +68,5 @@
     </TableView>
 
     <Button text="Load Abonnements" onAction="#loadAbonnements" styleClass="action-button" style="-fx-font-size: 16px;"/>
+
 </VBox>

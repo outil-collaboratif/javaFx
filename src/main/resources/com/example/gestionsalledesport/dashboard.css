@@ -1,0 +1,36 @@
+#dashboardTitle {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 10px 0;
+}
+
+#sectionContainer {
+    -fx-background-color: #f9f9f9;
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+    -fx-border-radius: 10px;
+}
+
+#sectionTitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+#statisticsLabels .label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #666666;
+}
+
+.button {
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Darker Green */
+}

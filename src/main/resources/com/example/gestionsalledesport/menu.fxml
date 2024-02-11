@@ -1,16 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.geometry.Insets?>
-
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.gestionsalledesport.controllers.MenuController">
+<?import javafx.geometry.Pos?>
+<VBox alignment="CENTER" spacing="20" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.gestionsalledesport.controllers.MenuController" stylesheets="@dashboard.css">
+    <prefWidth>800</prefWidth>
+    <prefHeight>600</prefHeight>
+    
     <padding>
         <Insets top="50" right="50" bottom="50" left="50"/>
     </padding>
-    <Label text="Welcome!" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <!-- Dashboard Title -->
+    <Label id="dashboardTitle" text="Dashboard"/>
+
+    <!-- Logged in user's name -->
     <Label fx:id="userNameLabel" style="-fx-font-size: 16px;"/>
-    <Button text="Gestion d'abonnement" onAction="#navigateToAbonnement"/>
-    <Button text="Gestion des cours" onAction="#navigateToCours"/>
+
+    <!-- Statistics Cards -->
+    <FlowPane alignment="CENTER" hgap="20" vgap="20">
+        <!-- Abonnements Statistics Card -->
+        <VBox id="sectionContainer" alignment="CENTER">
+            <Label id="sectionTitle" text="Abonnements Statistics"/>
+            <VBox id="statisticsLabels">
+                <Label text="Total Abonnements: " fx:id="totalAbonnementsLabel"/>
+                <Label text="Active Abonnements: " fx:id="activeAbonnementsLabel"/>
+            </VBox>
+            <!-- Add graph representation here if needed -->
+        </VBox>
+
+        <!-- Users Statistics Card -->
+        <VBox id="sectionContainer" alignment="CENTER">
+            <Label id="sectionTitle" text="Users Statistics"/>
+            <VBox id="statisticsLabels">
+                <Label text="Total Users: " fx:id="totalUsersLabel"/>
+            </VBox>
+            <!-- Add graph representation here if needed -->
+        </VBox>
+
+        <!-- Coaches Statistics Card -->
+        <VBox id="sectionContainer" alignment="CENTER">
+            <Label id="sectionTitle" text="Coaches Statistics"/>
+            <VBox id="statisticsLabels">
+                <Label text="Total Coaches: " fx:id="totalCoachesLabel"/>
+            </VBox>
+            <!-- Add graph representation here if needed -->
+        </VBox>
+    </FlowPane>
+
+    <!-- Navigation Buttons -->
+    <HBox alignment="CENTER" spacing="20">
+        <Button text="Gestion d'abonnement" onAction="#navigateToAbonnement" styleClass="button"/>
+        <Button text="Gestion des utilisateur" onAction="#addNewUser" styleClass="button"/>
+        <Button text="Gestion des cours" onAction="#navigateToCours" styleClass="button"/>
+    </HBox>
 </VBox>
