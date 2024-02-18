@@ -5,11 +5,11 @@ import java.util.Date;
 public class GymFacility {
     private int id;
     private String name;
-    private String type;
+    private FacilityType type; // Enum representing facility types
     private boolean available;
     private Date unavailableDate; // Date when the facility is not available
 
-    public GymFacility(int id, String name, String type, boolean available, Date unavailableDate) {
+    public GymFacility(int id, String name, FacilityType type, boolean available, Date unavailableDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -25,7 +25,7 @@ public class GymFacility {
         return name;
     }
 
-    public String getType() {
+    public FacilityType getType() {
         return type;
     }
 
@@ -36,5 +36,11 @@ public class GymFacility {
     public Date getUnavailableDate() {
         return unavailableDate;
     }
-}
 
+    // Enum representing facility types
+    public enum FacilityType {
+        WORKOUT_AREA,
+        POOL,
+        DANCE_STUDIO
+    }
+}

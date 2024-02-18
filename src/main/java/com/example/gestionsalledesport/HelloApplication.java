@@ -1,4 +1,5 @@
 package com.example.gestionsalledesport;
+import com.example.gestionsalledesport.services.GymFacilitiesTestRunner;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,12 @@ public class HelloApplication extends Application {
         stage.setTitle("Abonnement");
         stage.setScene(scene);
         stage.show();
+        runGymFacilityTests();
+    }
+    private void runGymFacilityTests() {
+        // Instantiate and run the test runner class for Gym Facility tests
+        GymFacilitiesTestRunner testRunner = new GymFacilitiesTestRunner();
+        testRunner.runTests();
     }
 
     public static void main(String[] args) {

@@ -22,7 +22,7 @@ public class GymFacilitiesService {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                String type = rs.getString("type");
+                GymFacility.FacilityType type = GymFacility.FacilityType.valueOf(rs.getString("type"));
                 boolean available = rs.getBoolean("available");
                 Date unavailableDate = rs.getDate("unavailable_date");
                 facilities.add(new GymFacility(id, name, type, available, unavailableDate));
@@ -36,7 +36,7 @@ public class GymFacilitiesService {
         String query = "INSERT INTO gym_facilities (name, type, available, unavailable_date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, facility.getName());
-            stmt.setString(2, facility.getType());
+            stmt.setString(2, facility.getType().toString());
             stmt.setBoolean(3, true); // Newly inserted facility is available by default
             stmt.setDate(4, facility.getUnavailableDate() != null ? new java.sql.Date(facility.getUnavailableDate().getTime()) : null);
             int rowsInserted = stmt.executeUpdate();
