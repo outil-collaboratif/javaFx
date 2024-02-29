@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import com.example.gestionsalledesport.models.GymFacility;
 
+@SuppressWarnings("ClassEscapesDefinedScope")
 public class GymFacilitiesService {
     final Connection connection;
 
