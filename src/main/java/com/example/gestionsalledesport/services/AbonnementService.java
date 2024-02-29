@@ -121,12 +121,10 @@ public class AbonnementService {
 
         return abonnements;
     }
-<<<<<<< HEAD
+
 
     public static void main(String[] args) {
         AbonnementService abonnementService = new AbonnementService();
         abonnementService.createAbonnementTable();
-    }
-=======
->>>>>>> master
-}
+    }}
+

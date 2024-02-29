@@ -4,19 +4,18 @@ import com.example.gestionsalledesport.HelloApplication;
 import com.example.gestionsalledesport.models.Abonnement;
 import com.example.gestionsalledesport.models.User;
 import com.example.gestionsalledesport.services.AbonnementService;
-<<<<<<< HEAD
+
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-=======
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
->>>>>>> master
+
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -108,7 +107,7 @@ public class AbonnementController {
         userIdField.clear();
     }
 
-<<<<<<< HEAD
+
     @FXML
     private void returnToMenu(ActionEvent event) {
         try {
@@ -122,7 +121,7 @@ public class AbonnementController {
         }
     }
     
-=======
+
     // Inside initialize method or constructor
     public void initialize() {
         isDateValid = Bindings.createBooleanBinding(() -> isValidDate(dateField.getText()), dateField.textProperty());
@@ -160,5 +159,5 @@ public class AbonnementController {
             return false;
         }
     }
->>>>>>> master
+
 }

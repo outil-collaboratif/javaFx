@@ -64,6 +64,27 @@ public class MenuController {
         navigateToInterface("add_user.fxml");
     }
 
+    @FXML
+    private void logout(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            // Get the current stage
+            Stage stage = (Stage) userNameLabel.getScene().getWindow();
+            
+            // Set the new scene to the stage
+            stage.setScene(scene);
+            
+            // Close the current stage (optional, depends on your requirements)
+            // stage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
     // Generic method to navigate to any interface based on FXML file name
     private void navigateToInterface(String fxmlFileName) {
         try {
