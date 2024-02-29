@@ -1,23 +1,36 @@
 package com.example.gestionsalledesport.models;
 
+import java.time.LocalDate;
+
 public class Abonnement {
     private Long id;
 
-    private String date;
+    private LocalDate date;
+    private AbonnementType type;
 
-    public Abonnement(Long id, String date, String durée, double tarif, User user) {
+
+    public AbonnementType getType() {
+        return type;
+    }
+
+    public void setType(AbonnementType type) {
+        this.type = type;
+    }
+
+    public Abonnement(Long id, LocalDate date, String durée, double tarif, User user, AbonnementType type) {
         this.id = id;
         this.date = date;
         this.durée = durée;
         this.tarif = tarif;
         this.user = user;
+        this.type = type;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

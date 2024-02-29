@@ -1,15 +1,15 @@
 package com.example.gestionsalledesport.controllers;
 
 import com.example.gestionsalledesport.models.Abonnement;
+import com.example.gestionsalledesport.models.AbonnementType;
 import com.example.gestionsalledesport.models.User;
 import com.example.gestionsalledesport.services.AbonnementService;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AbonnementController {
@@ -24,10 +24,13 @@ public class AbonnementController {
     private Button deleteButton;
 
     @FXML
-    private TextField dateField;
+    private DatePicker dateField;
 
     @FXML
     private TextField dureeField;
+
+    @FXML
+    private ComboBox<String> typeComboBox;
 
     @FXML
     private TextField tarifField;
@@ -38,21 +41,18 @@ public class AbonnementController {
     @FXML
     private TableView<Abonnement> abonnementsTable;
 
-    private BooleanBinding isDateValid;
-    private BooleanBinding isDureeValid;
-    private BooleanBinding isTarifValid;
-    private BooleanBinding isUserIdValid;
+    private BooleanBinding isInputValid;
 
     private final AbonnementService abonnementService = new AbonnementService();
 
     @FXML
     private void createAbonnement() {
-        String date = dateField.getText();
+        LocalDate date = dateField.getValue();
         String duree = dureeField.getText();
         double tarif = Double.parseDouble(tarifField.getText());
         long userId = Long.parseLong(userIdField.getText());
-
-        Abonnement abonnement = new Abonnement(null, date, duree, tarif, new User(userId));
+        AbonnementType type = AbonnementType.valueOf(typeComboBox.getValue());
+        Abonnement abonnement = new Abonnement(null, date, duree, tarif, new User(userId), type);
         abonnementService.insertAbonnement(abonnement);
         clearFields();
         loadAbonnements();
@@ -62,15 +62,18 @@ public class AbonnementController {
     private void updateAbonnement() {
         Abonnement selectedAbonnement = abonnementsTable.getSelectionModel().getSelectedItem();
         if (selectedAbonnement != null) {
-            selectedAbonnement.setDate(dateField.getText());
+            LocalDate date = dateField.getValue();
+            selectedAbonnement.setDate(date);
             selectedAbonnement.setDurée(dureeField.getText());
             selectedAbonnement.setTarif(Double.parseDouble(tarifField.getText()));
             selectedAbonnement.getUser().setId(Long.parseLong(userIdField.getText()));
+            selectedAbonnement.setType(AbonnementType.valueOf(typeComboBox.getValue()));
             abonnementService.updateAbonnement(selectedAbonnement);
             clearFields();
             loadAbonnements();
         }
     }
+
 
     @FXML
     private void deleteAbonnement() {
@@ -90,33 +93,37 @@ public class AbonnementController {
     }
 
     private void clearFields() {
-        dateField.clear();
+        dateField.setValue(null); // Clear DatePicker value
         dureeField.clear();
         tarifField.clear();
         userIdField.clear();
     }
 
-    // Inside initialize method or constructor
+    @FXML
     public void initialize() {
-        isDateValid = Bindings.createBooleanBinding(() -> isValidDate(dateField.getText()), dateField.textProperty());
-        isDureeValid = Bindings.createBooleanBinding(() -> isValidDuree(dureeField.getText()), dureeField.textProperty());
-        isTarifValid = Bindings.createBooleanBinding(() -> isValidTarif(tarifField.getText()), tarifField.textProperty());
-        isUserIdValid = Bindings.createBooleanBinding(() -> isValidUserId(userIdField.getText()), userIdField.textProperty());
+        isInputValid = Bindings.createBooleanBinding(
+                () -> isValidDate(dateField.getValue()) &&
+                        isValidText(dureeField.getText()) &&
+                        isValidDouble(tarifField.getText()) &&
+                        isValidLong(userIdField.getText()),
+                dateField.valueProperty(),
+                dureeField.textProperty(),
+                tarifField.textProperty(),
+                userIdField.textProperty());
 
-        createButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
-        updateButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
+        createButton.disableProperty().bind(isInputValid.not());
+        updateButton.disableProperty().bind(isInputValid.not());
     }
 
-    // Define your validation methods
-    private boolean isValidDate(String text) {
+    private boolean isValidDate(LocalDate date) {
+        return date != null;
+    }
+
+    private boolean isValidText(String text) {
         return !text.isEmpty();
     }
 
-    private boolean isValidDuree(String text) {
-        return !text.isEmpty();
-    }
-
-    private boolean isValidTarif(String text) {
+    private boolean isValidDouble(String text) {
         try {
             Double.parseDouble(text);
             return true;
@@ -125,7 +132,7 @@ public class AbonnementController {
         }
     }
 
-    private boolean isValidUserId(String text) {
+    private boolean isValidLong(String text) {
         try {
             Long.parseLong(text);
             return true;
