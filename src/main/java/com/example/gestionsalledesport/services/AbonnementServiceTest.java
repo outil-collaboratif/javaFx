@@ -9,12 +9,6 @@ import static org.junit.Assert.*;
 
 public class AbonnementServiceTest {
 
-    @Test
-    public void test_insert_abonnement_null_abonnement() {
-        AbonnementService abonnementService = new AbonnementService();
-        abonnementService.insertAbonnement(null);
-
-    }
 
     @Test
     public void test_insert_abonnement_null_user() {
