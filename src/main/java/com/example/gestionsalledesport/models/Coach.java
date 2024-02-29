@@ -11,6 +11,10 @@ public class Coach extends User{
         return specialite;
     }
 
+    public Coach(long id){
+        super(id);
+    }
+
     public void setSpecialite(String specialite) {
         this.specialite = specialite;
     }
