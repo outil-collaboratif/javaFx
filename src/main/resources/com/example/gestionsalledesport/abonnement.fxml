@@ -6,74 +6,99 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.HBox?>
-<VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.gestionsalledesport.controllers.AbonnementController"
-      stylesheets="@abonnement.css">
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.example.gestionsalledesport.controllers.AbonnementController"
+           stylesheets="@abonnement.css">
 
-    <padding>
-        <Insets bottom="30" left="30" right="30" top="30"/>
-    </padding>
+    <VBox alignment="CENTER" spacing="20.0">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20"/>
+        </padding>
 
-    <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
-        <children>
-            <!-- Date -->
-            <Label text="Date:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                <promptText>Enter date</promptText>
-            </TextField>
+        <!-- Subscription Input Fields -->
+        <VBox spacing="10" style="-fx-background-color: #f5f5f5; -fx-border-radius: 10px; -fx-padding: 20px;">
+            <!-- Title -->
+            <Label text="Subscription Management" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-            <!-- Durée -->
-            <Label text="Durée:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                <promptText>Enter duration</promptText>
-            </TextField>
+            <children>
+                <!-- Date -->
+                <!-- Date -->
+                <Label text="Subscription Date:" style="-fx-font-weight: bold;"/>
+                <DatePicker fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"
+                            promptText="Select subscription date"/>
 
-            <!-- Tarif -->
-            <Label text="Tarif:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="tarifField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                <promptText>Enter tarif</promptText>
-            </TextField>
+                <!-- Duration -->
+                <Label text="Duration (in months):" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"
+                           promptText="e.g., 6"/>
 
-            <!-- User ID -->
-            <Label text="User ID:" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="userIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                <promptText>Enter user ID</promptText>
-            </TextField>
-        </children>
+                <!-- Price -->
+                <Label text="Price (USD):" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="tarifField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"
+                           promptText="Enter subscription price"/>
+
+                <!-- Subscription Type -->
+                <Label text="Subscription Type:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="typeComboBox" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"
+                          promptText="Select subscription type">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="NORMAL"/>
+                            <String fx:value="STUDENT"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+
+                <!-- User ID -->
+                <Label text="User ID:" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="userIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"
+                           promptText="Enter user ID"/>
+            </children>
+        </VBox>
+
+        <!-- Action Buttons -->
+        <HBox spacing="15" style="-fx-background-color: #e0e0ea; -fx-border-radius: 10px; -fx-padding: 15px;">
+            <children>
+                <Button fx:id="createButton" text="Create" onAction="#createAbonnement" styleClass="action-button"/>
+                <Button fx:id="updateButton" text="Update" onAction="#updateAbonnement" styleClass="action-button"/>
+                <Button fx:id="deleteButton" text="Delete" onAction="#deleteAbonnement" styleClass="action-button"/>
+            </children>
+        </HBox>
+
+        <!-- Table View -->
+        <TableView fx:id="abonnementsTable" styleClass="table-view">
+            <columns>
+                <TableColumn text="ID" prefWidth="50">
+                    <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Subscription Date" prefWidth="150">
+                    <cellValueFactory><PropertyValueFactory property="date"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Duration (months)" prefWidth="120">
+                    <cellValueFactory><PropertyValueFactory property="durée"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Subscription Type" prefWidth="120">
+                    <cellValueFactory><PropertyValueFactory property="type"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Price (USD)" prefWidth="100">
+                    <cellValueFactory><PropertyValueFactory property="tarif"/></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="User Details" prefWidth="200">
+                    <cellValueFactory><PropertyValueFactory property="userDetails"/></cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <!-- Load Subscriptions Button -->
+        <Button text="Load Subscriptions" onAction="#loadAbonnements" styleClass="action-button" style="-fx-font-size: 16px;"/>
     </VBox>
-
-    <HBox spacing="15" style="-fx-background-color: #e0e0ea; -fx-border-radius: 10px; -fx-padding: 15px;">
-        <children>
-            <Button fx:id="createButton" text="Create" onAction="#createAbonnement" styleClass="action-button"/>
-            <Button fx:id="updateButton" text="Update" onAction="#updateAbonnement" styleClass="action-button"/>
-            <Button fx:id="deleteButton" text="Delete" onAction="#deleteAbonnement" styleClass="action-button"/>
-        </children>
-    </HBox>
-
-    <TableView fx:id="abonnementsTable" styleClass="table-view">
-        <columns>
-            <TableColumn text="ID" prefWidth="50">
-                <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Date" prefWidth="150">
-                <cellValueFactory><PropertyValueFactory property="date"/></cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Durée" prefWidth="100">
-                <cellValueFactory><PropertyValueFactory property="durée"/></cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Tarif" prefWidth="100">
-                <cellValueFactory><PropertyValueFactory property="tarif"/></cellValueFactory>
-            </TableColumn>
-            <TableColumn text="User Details" prefWidth="200">
-                <cellValueFactory>
-                    <PropertyValueFactory property="userDetails"/>
-                </cellValueFactory>
-            </TableColumn>
-        </columns>
-    </TableView>
-
-    <Button text="Load Abonnements" onAction="#loadAbonnements" styleClass="action-button" style="-fx-font-size: 16px;"/>
-</VBox>
+</StackPane>
