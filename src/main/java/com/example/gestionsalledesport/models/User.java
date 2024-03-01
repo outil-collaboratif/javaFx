@@ -5,7 +5,8 @@ public class User {
     private String nom;
     private String prenom;
     private String email;
-    private  String birthday;
+    private String birthday;
+  
 
     public User(Long id, String nom, String prenom, String email, String birthday) {
         this.id = id;
@@ -13,6 +14,8 @@ public class User {
         this.prenom = prenom;
         this.email = email;
         this.birthday = birthday;
+       
+
     }
 
     public User(long userId) {
@@ -22,7 +25,6 @@ public class User {
     public Long getId() {
         return id != null ? id : 0L;
     }
-
 
     public void setId(Long id) {
         this.id = id;

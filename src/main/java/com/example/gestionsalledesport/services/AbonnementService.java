@@ -108,6 +108,7 @@ public class AbonnementService {
                         resultSet.getString("users.prenom"),
                         resultSet.getString("users.email"),
                         resultSet.getString("users.birthday")
+
                 );
 
                 Abonnement abonnement = new Abonnement(id, date, duree, tarif, user);
@@ -120,5 +121,10 @@ public class AbonnementService {
 
         return abonnements;
     }
-}
+
+
+    public static void main(String[] args) {
+        AbonnementService abonnementService = new AbonnementService();
+        abonnementService.createAbonnementTable();
+    }}
 
