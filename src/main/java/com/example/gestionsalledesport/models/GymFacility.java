@@ -1,7 +1,5 @@
 package com.example.gestionsalledesport.models;
 
-import javafx.beans.value.ObservableValue;
-
 import java.util.Date;
 
 public class GymFacility {
@@ -23,11 +21,11 @@ public class GymFacility {
         return id;
     }
 
-    public ObservableValue<String> getName() {
+    public String getName() {
         return name;
     }
 
-    public ObservableValue<String> getType() {
+    public FacilityType getType() {
         return type;
     }
 

@@ -30,13 +30,34 @@ public class GymFacilitiesController {
         List<GymFacility> allFacilities = facilitiesService.getAllFacilities();
         facilityTable.getItems().addAll(allFacilities);
 
-        // Add custom cell factory to the date picker to disable unavailable dates
-        facilityTable.getSelectionModel().selectedItemProperty().addListener((obs, oldFacility, newFacility) -> {
-            if (newFacility != null) {
-                setupDatePicker(newFacility);
-            }
+// Add custom cell factory to the date picker to disable unavailable dates
+        TableColumn<GymFacility, LocalDate> datePickerColumn = new TableColumn<>("Rent Date");
+        datePickerColumn.setCellValueFactory(param -> {
+            DatePicker datePicker = new DatePicker();
+            datePicker.setOnAction(event -> {
+                LocalDate selectedDate = datePicker.getValue();
+                if (selectedDate != null) {
+                    try {
+                        boolean available = facilitiesService.isFacilityAvailableForDate(param.getValue().getId(), java.sql.Date.valueOf(selectedDate));
+                        if (!available) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Facility Not Available");
+                            alert.setContentText("Facility is not available on " + selectedDate + ". Please select another date.");
+                            alert.showAndWait();
+                        }
+                    } catch (SQLException e) {
+                        // Handle SQLException
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return datePicker.valueProperty();
         });
+        facilityTable.getColumns().add(datePickerColumn);
+
+
     }
+
 
     private void setupDatePicker(GymFacility facility) {
         TableColumn<GymFacility, LocalDate> datePickerColumn = new TableColumn<>("Rent Date");
