@@ -5,6 +5,7 @@ import com.example.gestionsalledesport.models.Cours;
 import com.example.gestionsalledesport.services.CoachService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -12,6 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CoachController {
+
+    @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField emailField;
 
     @FXML
     private TextField specialtyField;
@@ -23,7 +33,7 @@ public class CoachController {
     private TextField availabilityField;
 
     @FXML
-    private TextField courseIdField;
+    private TextField coursesField;
 
     @FXML
     private Button createButton;
@@ -46,65 +56,62 @@ public class CoachController {
         createButton.setOnAction(event -> createEntity());
         updateButton.setOnAction(event -> updateEntity());
         deleteButton.setOnAction(event -> deleteEntity());
-
-        coachesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldEntity, newEntity) -> {
-            if (newEntity != null) {
-                List<String> entityDates = coachService.getEntityDates(newEntity.getId());
-                showEntityDatesDialog(newEntity.getId(), newEntity.getSpecialty(), entityDates);
-            }
-        });
     }
 
     private void initializeTable() {
+        TableColumn<Coach, String> firstNameColumn = new TableColumn<>("First Name");
+        TableColumn<Coach, String> lastNameColumn = new TableColumn<>("Last Name");
+        TableColumn<Coach, String> emailColumn = new TableColumn<>("Email");
         TableColumn<Coach, String> specialtyColumn = new TableColumn<>("Specialty");
         TableColumn<Coach, String> bioColumn = new TableColumn<>("Bio");
         TableColumn<Coach, String> availabilityColumn = new TableColumn<>("Availability");
-        TableColumn<Coach, Long> courseIdColumn = new TableColumn<>("Course ID");
+        TableColumn<Coach, List<Cours>> coursesColumn = new TableColumn<>("Courses");
 
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         specialtyColumn.setCellValueFactory(new PropertyValueFactory<>("specialty"));
         bioColumn.setCellValueFactory(new PropertyValueFactory<>("bio"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
-        courseIdColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
+        coursesColumn.setCellValueFactory(new PropertyValueFactory<>("courses"));
 
-        coachesTable.getColumns().addAll(specialtyColumn, bioColumn, availabilityColumn, courseIdColumn);
+        coachesTable.getColumns().addAll(firstNameColumn, lastNameColumn, emailColumn, specialtyColumn, bioColumn, availabilityColumn, coursesColumn);
+
     }
 
 
 
+    @FXML
     private void createEntity() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
         String specialty = specialtyField.getText();
         String bio = bioField.getText();
         String availability = availabilityField.getText();
-        long courseId = Long.parseLong(courseIdField.getText());
+        List<Cours> courses = parseCourses(coursesField.getText());
 
-        Coach coach = new Coach(specialty, bio, availability, courseId);
+        Coach coach = new Coach(null, firstName, lastName, email, specialty, bio, availability, courses);
         coachService.insertEntity(coach);
-
     }
 
+    @FXML
     private void updateEntity() {
         Coach selectedCoach = coachesTable.getSelectionModel().getSelectedItem();
         if (selectedCoach != null) {
+            selectedCoach.setFirstName(firstNameField.getText());
+            selectedCoach.setLastName(lastNameField.getText());
+            selectedCoach.setEmail(emailField.getText());
             selectedCoach.setSpecialty(specialtyField.getText());
             selectedCoach.setBio(bioField.getText());
             selectedCoach.setAvailability(availabilityField.getText());
-            List<Cours> courses = parseCourses(courseIdField.getText());
-            selectedCoach.setCourses(courses);
-            coachService.updateEntity(selectedCoach);
+            selectedCoach.setCourses(parseCourses(coursesField.getText()));
 
+            coachService.updateEntity(selectedCoach);
         }
     }
-    private List<Cours> parseCourses(String coursesString) {
-        List<Cours> coursesList = new ArrayList<>();
-        // Supposons que les noms des cours sont séparés par des virgules dans la chaîne
-        String[] coursesArray = coursesString.split(",");
-        for (String courseName : coursesArray) {
-            // Créez un objet Cours pour chaque nom de cours et ajoutez-le à la liste
-            Cours course = new Cours(courseName.trim()); // Supprimez les espaces autour du nom du cours
-            coursesList.add(course);
-        }
-        return coursesList;
-    }
+
+    @FXML
     private void deleteEntity() {
         Coach selectedCoach = coachesTable.getSelectionModel().getSelectedItem();
         if (selectedCoach != null) {
@@ -113,11 +120,32 @@ public class CoachController {
         }
     }
 
-    private void showEntityDatesDialog(long entityId, String specialty, List<String> entityDates) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Dates des cours pour le coach " + specialty);
-        alert.setHeaderText("Dates des cours associées au coach " + specialty + " (ID: " + entityId + ")");
-        alert.setContentText(String.join("\n", entityDates));
-        alert.showAndWait();
+    private List<Cours> parseCourses(String coursesString) {
+        List<Cours> coursesList = new ArrayList<>();
+        String[] coursesArray = coursesString.split(",");
+        for (String courseName : coursesArray) {
+            Cours course = new Cours(courseName.trim());
+            coursesList.add(course);
+        }
+        return coursesList;
     }
+
+    @FXML
+    private void handleShowCoachCourses() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CoachCoursesView.fxml"));
+            Parent root = loader.load();
+
+            CoachController controller = loader.getController();
+
+            controller.setCoachId(coachIdField.getText());
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

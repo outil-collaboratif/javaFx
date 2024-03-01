@@ -1,6 +1,7 @@
 package com.example.gestionsalledesport.services;
 
 import com.example.gestionsalledesport.models.Coach;
+import com.example.gestionsalledesport.models.Cours;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,25 +19,27 @@ public class CoachService {
     public void createCoachTable() {
         String createCoachTableSQL = "CREATE TABLE IF NOT EXISTS coaches (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY," +
+                "firstName VARCHAR(50) NOT NULL," +
+                "lastName VARCHAR(50) NOT NULL," +
+                "email VARCHAR(100) NOT NULL," +
                 "specialty VARCHAR(100) NOT NULL," +
                 "bio TEXT," +
-                "availability VARCHAR(100)," +
-                "courseId INT," +
-                "FOREIGN KEY (courseId) REFERENCES courses(id)" +
+                "availability VARCHAR(100)" +
                 ")";
         dao.executeQuery(createCoachTableSQL);
         System.out.println("Coach table created successfully.");
     }
 
     public void insertEntity(Coach coach) {
-        String insertCoachSQL = "INSERT INTO coaches (specialty, bio, availability, courseId) VALUES (?, ?, ?, ?)";
+        String insertCoachSQL = "INSERT INTO coaches (firstName, lastName, email, specialty, bio, availability) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertCoachSQL)) {
-            preparedStatement.setString(1, coach.getSpecialty());
-            preparedStatement.setString(2, coach.getBio());
-            preparedStatement.setString(3, coach.getAvailability());
-            String coursesString = String.join(" ", coach.getCourses());
-            preparedStatement.setString(4, coursesString);
+            preparedStatement.setString(1, coach.getFirstName());
+            preparedStatement.setString(2, coach.getLastName());
+            preparedStatement.setString(3, coach.getEmail());
+            preparedStatement.setString(4, coach.getSpecialty());
+            preparedStatement.setString(5, coach.getBio());
+            preparedStatement.setString(6, coach.getAvailability());
             preparedStatement.executeUpdate();
             System.out.println("Coach inserted successfully.");
         } catch (SQLException e) {
@@ -45,15 +48,16 @@ public class CoachService {
     }
 
     public void updateEntity(Coach coach) {
-        String updateCoachSQL = "UPDATE coaches SET specialty=?, bio=?, availability=?, courseId=? WHERE id=?";
+        String updateCoachSQL = "UPDATE coaches SET firstName=?, lastName=?, email=?, specialty=?, bio=?, availability=? WHERE id=?";
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(updateCoachSQL)) {
-            preparedStatement.setString(1, coach.getSpecialty());
-            preparedStatement.setString(2, coach.getBio());
-            preparedStatement.setString(3, coach.getAvailability());
-            String coursesString = String.join(" ", coach.getCourses());
-            preparedStatement.setString(4, coursesString);
-            preparedStatement.setLong(5, coach.getId());
+            preparedStatement.setString(1, coach.getFirstName());
+            preparedStatement.setString(2, coach.getLastName());
+            preparedStatement.setString(3, coach.getEmail());
+            preparedStatement.setString(4, coach.getSpecialty());
+            preparedStatement.setString(5, coach.getBio());
+            preparedStatement.setString(6, coach.getAvailability());
+            preparedStatement.setLong(7, coach.getId());
             preparedStatement.executeUpdate();
             System.out.println("Coach updated successfully.");
         } catch (SQLException e) {
@@ -66,7 +70,6 @@ public class CoachService {
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(deleteCoachSQL)) {
             preparedStatement.setLong(1, coachId);
-
             preparedStatement.executeUpdate();
             System.out.println("Coach deleted successfully.");
         } catch (SQLException e) {
@@ -92,6 +95,4 @@ public class CoachService {
 
         return coursesDates;
     }
-
-
 }

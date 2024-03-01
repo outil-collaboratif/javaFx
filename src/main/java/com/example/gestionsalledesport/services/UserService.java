@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserService {
@@ -42,12 +44,16 @@ public class UserService {
         System.out.println("Admin table created successfully.");
 
         // Create 'coaches' table
-        String createCoachTableSQL = "CREATE TABLE IF NOT EXISTS coaches (" +
-                "    id INT AUTO_INCREMENT PRIMARY KEY," +
-                "    specialty VARCHAR(100) NOT NULL," +
-                "    bio TEXT," +
-                "    availability VARCHAR(100)" +
-                ")";
+        String createCoachTableSQL =  "CREATE TABLE IF NOT EXISTS coaches (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "firstName VARCHAR(50) NOT NULL," +
+                    "lastName VARCHAR(50) NOT NULL," +
+                    "email VARCHAR(100) NOT NULL," +
+                    "specialty VARCHAR(100) NOT NULL," +
+                    "bio TEXT," +
+                    "availability VARCHAR(100)" +
+                    ")";
+
         dao.executeQuery(createCoachTableSQL);
         System.out.println("Coach table created successfully.");
     }
@@ -91,14 +97,15 @@ public class UserService {
 
 
     public void insertCoach(Coach coach) {
-        String insertCoachSQL = "INSERT INTO coaches (id, specialty, bio, availability, courses) VALUES (?, ?, ?, ?, ?)";
+        String insertCoachSQL = "INSERT INTO coaches (firstName, lastName, email, specialty, bio, availability) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = Objects.requireNonNull(DAO.getConnection()).prepareStatement(insertCoachSQL)) {
-            preparedStatement.setString(1, String.valueOf(coach.getId()));
-            preparedStatement.setString(2, coach.getSpecialty());
-            preparedStatement.setString(3, coach.getBio());
-            preparedStatement.setString(4, coach.getAvailability());
-            preparedStatement.setString(5, String.valueOf(coach.getCourses()));
+            preparedStatement.setString(1, coach.getFirstName());
+            preparedStatement.setString(2, coach.getLastName());
+            preparedStatement.setString(3, coach.getEmail());
+            preparedStatement.setString(4, coach.getSpecialty());
+            preparedStatement.setString(5, coach.getBio());
+            preparedStatement.setString(6, coach.getAvailability());
 
             preparedStatement.executeUpdate();
             System.out.println("Coach inserted successfully.");
@@ -106,6 +113,7 @@ public class UserService {
             ex.printStackTrace();
         }
     }
+
 
 
     public static void main(String[] args) {
@@ -118,8 +126,10 @@ public class UserService {
 
         Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"));
         userService.insertAdmin(admin);
-
-        Coach coach = new Coach(null, "Coach", "yoga", "monday", "stretching" );
+        Cours legsCourse = new Cours();
+        List<Cours> coursesList = new ArrayList<>();
+        coursesList.add(legsCourse);
+        Coach coach = new Coach(null, "ahmed", "sfar", "ahmedsfar@example.com", "yoga", "specialiste en stretching", "monday", coursesList );
         userService.insertCoach(coach);
     }
 }

@@ -3,24 +3,57 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-    <TableView fx:id="coachesTable" layoutX="14.0" layoutY="14.0" prefHeight="372.0" prefWidth="572.0">
-        <columns>
-            <TableColumn fx:id="specialtyColumn" prefWidth="180.0" text="Specialty" />
-            <TableColumn fx:id="bioColumn" prefWidth="180.0" text="Bio" />
-            <TableColumn fx:id="availabilityColumn" prefWidth="180.0" text="Availability" />
-            <TableColumn fx:id="courseIdColumn" prefWidth="180.0" text="Course ID" />
-        </columns>
-    </TableView>
-    <Label layoutX="14.0" layoutY="391.0" text="Specialty:" />
-    <Label layoutX="14.0" layoutY="423.0" text="Bio:" />
-    <Label layoutX="14.0" layoutY="455.0" text="Availability:" />
-    <Label layoutX="14.0" layoutY="487.0" text="Course ID:" />
-    <TextField fx:id="specialtyField" layoutX="103.0" layoutY="387.0" />
-    <TextField fx:id="bioField" layoutX="103.0" layoutY="419.0" />
-    <TextField fx:id="availabilityField" layoutX="103.0" layoutY="451.0" />
-    <TextField fx:id="courseIdField" layoutX="103.0" layoutY="483.0" />
-    <Button fx:id="createButton" layoutX="481.0" layoutY="387.0" text="Create" />
-    <Button fx:id="updateButton" layoutX="481.0" layoutY="419.0" text="Update" />
-    <Button fx:id="deleteButton" layoutX="481.0" layoutY="451.0" text="Delete" />
-</AnchorPane>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.gestionsalledesport.controllers.CoachController"
+            prefWidth="600" prefHeight="400">
+
+    <top>
+        <Label text="Gestion des coachs" />
+    </top>
+
+    <center>
+        <TableView fx:id="coachesTable" prefWidth="400" prefHeight="300">
+            <columns>
+                <TableColumn text="ID" prefWidth="50" >
+                    <cellValueFactory><PropertyValueFactory property="id" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Prénom" prefWidth="100">
+                    <cellValueFactory><PropertyValueFactory property="firstName" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Nom" prefWidth="100">
+                    <cellValueFactory><PropertyValueFactory property="lastName" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Email" prefWidth="150">
+                    <cellValueFactory><PropertyValueFactory property="email" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Spécialité" prefWidth="100">
+                    <cellValueFactory><PropertyValueFactory property="specialty" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Bio" prefWidth="200">
+                    <cellValueFactory><PropertyValueFactory property="bio" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Disponibilité" prefWidth="150">
+                    <cellValueFactory><PropertyValueFactory property="availability" /></cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="10">
+            <TextField fx:id="firstNameField" promptText="Prénom" />
+            <TextField fx:id="lastNameField" promptText="Nom" />
+            <TextField fx:id="emailField" promptText="Email" />
+            <TextField fx:id="specialtyField" promptText="Spécialité" />
+            <TextField fx:id="bioField" promptText="Bio" />
+            <TextField fx:id="availabilityField" promptText="Disponibilité" />
+            <Button text="Créer" onAction="#createEntity" />
+            <Button text="Mettre à jour" onAction="#updateEntity" />
+            <Button text="Supprimer" onAction="#deleteEntity" />
+            <Button text="Voir les cours" onAction="#parseCourses" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
