@@ -18,7 +18,10 @@ public class StatisticsService {
     }
 
     public int getActiveAbonnements() {
-        String query = "SELECT COUNT(*) FROM abonnements WHERE active = true";
+        String query = "SELECT COUNT(*) \r\n" + //
+                        "FROM abonnements \r\n" + //
+                        "WHERE DATEDIFF(CURDATE(), STR_TO_DATE(date, '%Y-%m-%d')) / 30 < duree;\r\n" + //
+                        "";
         return executeCountQuery(query);
     }
 

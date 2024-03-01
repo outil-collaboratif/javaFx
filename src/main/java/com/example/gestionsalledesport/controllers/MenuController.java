@@ -63,6 +63,9 @@ public class MenuController {
     public void addNewUser(ActionEvent event) {
         navigateToInterface("add_user.fxml");
     }
+    public void navigateToCoach(ActionEvent event) {
+        navigateToInterface("coach.fxml");
+    }
 
     @FXML
     private void logout(ActionEvent event) {

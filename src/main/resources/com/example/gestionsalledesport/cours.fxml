@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.gestionsalledesport.controllers.CoursController"
+      stylesheets="@abonnement.css">
+
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="30"/>
+    </padding>
+    <HBox alignment="TOP_LEFT">
+        <Button text="Return to Dashboard" onAction="#returnToMenu"/>
+    </HBox>
+
+    <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
+        <children>
+            <Label text="Libelle:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="libelleField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Description:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="descriptionField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Durée:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="dureeField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Date:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="dateField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+
+            <Label text="Coach ID:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="coachIdField" style="-fx-background-radius: 5px; -fx-border-radius: 5px;"/>
+        </children>
+    </VBox>
+
+    <HBox spacing="15" style="-fx-background-color: #e0e0ea; -fx-border-radius: 10px; -fx-padding: 15px;">
+        <children>
+            <Button text="Create" onAction="#createCours" styleClass="action-button"/>
+            <Button text="Update" onAction="#updateCours" styleClass="action-button"/>
+            <Button text="Delete" onAction="#deleteCours" styleClass="action-button"/>
+        </children>
+    </HBox>
+
+    <TableView fx:id="coursTable" styleClass="table-view">
+        <columns>
+            <TableColumn text="ID" prefWidth="50">
+                <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Libelle" prefWidth="150">
+                <cellValueFactory><PropertyValueFactory property="libelle"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Description" prefWidth="200">
+                <cellValueFactory><PropertyValueFactory property="description"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Durée" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="duree"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Date" prefWidth="150">
+                <cellValueFactory><PropertyValueFactory property="date"/></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Coach ID" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="coach"/></cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+
+    <Button text="Load Cours" onAction="#loadCours" styleClass="action-button" style="-fx-font-size: 16px;"/>
+</VBox>

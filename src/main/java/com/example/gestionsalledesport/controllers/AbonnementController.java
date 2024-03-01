@@ -123,14 +123,19 @@ public class AbonnementController {
     
 
     // Inside initialize method or constructor
+    
+    @FXML
     public void initialize() {
-        isDateValid = Bindings.createBooleanBinding(() -> isValidDate(dateField.getText()), dateField.textProperty());
-        isDureeValid = Bindings.createBooleanBinding(() -> isValidDuree(dureeField.getText()), dureeField.textProperty());
-        isTarifValid = Bindings.createBooleanBinding(() -> isValidTarif(tarifField.getText()), tarifField.textProperty());
-        isUserIdValid = Bindings.createBooleanBinding(() -> isValidUserId(userIdField.getText()), userIdField.textProperty());
-
-        createButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
-        updateButton.disableProperty().bind(isDateValid.not().or(isDureeValid.not()).or(isTarifValid.not()).or(isUserIdValid.not()));
+        abonnementsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                dateField.setText(newSelection.getDate());
+                dureeField.setText(newSelection.getDurée());
+                tarifField.setText(String.valueOf(newSelection.getTarif()));
+                userIdField.setText(String.valueOf(newSelection.getUser().getId()));
+            } else {
+                clearFields();
+            }
+        });
     }
 
     // Define your validation methods
