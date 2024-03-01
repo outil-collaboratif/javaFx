@@ -14,22 +14,24 @@ public class ButtonTableCellFactory implements Callback<TableColumn<GymFacility,
 
     private class ButtonTableCell extends TableCell<GymFacility, Integer> {
         private final Button rentButton;
+        private GymFacility currentFacility; // Store the GymFacility object
 
         public ButtonTableCell() {
             this.rentButton = new Button("Rent");
             this.rentButton.setOnAction(event -> {
-                GymFacility facility = getTableView().getItems().get(getIndex());
-                // Handle renting logic for the facility
-                System.out.println("Renting facility: " + facility.getName());
+                if (currentFacility != null) {
+                    CalendarScene.display(currentFacility); // Pass the GymFacility object to CalendarScene
+                }
             });
         }
 
         @Override
         protected void updateItem(Integer item, boolean empty) {
             super.updateItem(item, empty);
-            if (empty) {
+            if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                 setGraphic(null);
             } else {
+                currentFacility = (GymFacility) getTableRow().getItem();
                 setGraphic(rentButton);
             }
         }

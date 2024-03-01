@@ -25,7 +25,11 @@
                     <PropertyValueFactory property="type" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Rent Facility" fx:id="rentFacilityColumn" />
+            <TableColumn text="Rent Facility" fx:id="rentFacilityColumn">
+                <cellFactory>
+                    <ButtonTableCellFactory />
+                </cellFactory>
+        </TableColumn>
             
         </columns>
     </TableView>

@@ -104,12 +104,12 @@ public class GymFacilitiesController {
         };
     }
 
+
     @FXML
     private void rentFacility() {
         GymFacility selectedFacility = facilityTable.getSelectionModel().getSelectedItem();
         if (selectedFacility != null) {
-            // Handle renting logic here
-            System.out.println("Renting " + selectedFacility.getName());
+            CalendarScene.display(selectedFacility);
         }
     }
 }
