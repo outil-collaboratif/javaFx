@@ -1,16 +1,37 @@
 package com.example.gestionsalledesport.services;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.example.gestionsalledesport.models.GymFacility;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+
 public class GymFacilitiesService {
-    final Connection connection;
+    private final Connection connection;
 
     public GymFacilitiesService() {
         this.connection = DAO.getConnection(); // Establish database connection
+    }
+
+    // Create gym facilities table if not exists
+    public void createGymFacilitiesTable() {
+        // Create 'gym_facilities' table
+        String createGymTableSQL = "CREATE TABLE IF NOT EXISTS gym_facilities (" +
+                "id INT AUTO_INCREMENT PRIMARY KEY," +
+                "name VARCHAR(255) NOT NULL," +
+                "type VARCHAR(50) NOT NULL," +
+                "available BOOLEAN NOT NULL," +
+                "unavailable_date DATE" +
+                ")";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(createGymTableSQL);
+            System.out.println("gym_facilities table created successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // List all facilities
@@ -31,7 +52,7 @@ public class GymFacilitiesService {
         return facilities;
     }
 
-    // Insert facility for test
+    // Insert facility
     public boolean insertFacility(GymFacility facility) {
         String query = "INSERT INTO gym_facilities (name, type, available, unavailable_date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -43,6 +64,27 @@ public class GymFacilitiesService {
             return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Rent facility for a specific date
+    public boolean rentFacilityForDate(int id, Date rentalDate) throws SQLException {
+        // Check if facility is available for the specified date
+        if (isFacilityAvailableForDate(id, rentalDate)) {
+            // Insert a new row for renting the facility on the specified date
+            String insertQuery = "INSERT INTO gym_facilities (name, type, available, unavailable_date) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                
+                insertStmt.setString(2, getFacilityNameById(id)); // Get facility name by ID
+                insertStmt.setString(3, getFacilityTypeById(id)); // Get facility type by ID
+                insertStmt.setBoolean(4, false); // Set available to false
+                insertStmt.setDate(5, new java.sql.Date(rentalDate.getTime())); // Set unavailable date to rental date
+                int rowsInserted = insertStmt.executeUpdate();
+                return rowsInserted > 0; // Facility rented successfully if rows inserted
+            }
+        } else {
+            System.out.println("Facility is not available for the specified date.");
             return false;
         }
     }
@@ -59,28 +101,8 @@ public class GymFacilitiesService {
         }
     }
 
-    // Rent facility for a specific date
-    public boolean rentFacilityForDate(int id, Date rentalDate) throws SQLException {
-        // Check if facility is available for the specified date
-        if (isFacilityAvailableForDate(id, rentalDate)) {
-            // Insert a new row for renting the facility on the specified date
-            String insertQuery = "INSERT INTO gym_facilities (id, name, type, available, unavailable_date) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
-                insertStmt.setInt(1, id);
-                insertStmt.setString(2, getFacilityNameById(id)); // Get facility name by ID
-                insertStmt.setString(3, getFacilityTypeById(id)); // Get facility type by ID
-                insertStmt.setBoolean(4, false); // Set available to false
-                insertStmt.setDate(5, new java.sql.Date(rentalDate.getTime())); // Set unavailable date to rental date
-                int rowsInserted = insertStmt.executeUpdate();
-                return rowsInserted > 0; // Facility rented successfully if rows inserted
-            }
-        } else {
-            System.out.println("Facility is not available for the specified date.");
-            return false;
-        }
-    }
     // Method to retrieve facility name by ID
-    private String getFacilityNameById(int id) throws SQLException {
+    public String getFacilityNameById(int id) throws SQLException {
         String query = "SELECT name FROM gym_facilities WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -94,7 +116,7 @@ public class GymFacilitiesService {
     }
 
     // Method to retrieve facility type by ID
-    private String getFacilityTypeById(int id) throws SQLException {
+    public String getFacilityTypeById(int id) throws SQLException {
         String query = "SELECT type FROM gym_facilities WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -107,4 +129,5 @@ public class GymFacilitiesService {
         throw new SQLException("Facility not found for ID: " + id);
     }
 
+    // Test cases can be added as methods here, but it's recommended to keep them in separate test classes.
 }

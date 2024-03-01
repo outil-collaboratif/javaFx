@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.example.gestionsalledesport.controllers.ButtonTableCellFactory?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.util.Callback?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.gestionsalledesport.controllers.GymFacilitiesController"
+      prefHeight="700.0" prefWidth="900.0"
+      stylesheets="@gymFacilitiescss.css">
+
+    <TableView fx:id="facilityTable">
+        <columns>
+            <TableColumn text="Facility Name" fx:id="nameColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Facility Type" fx:id="typeColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="type" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Rent Facility" fx:id="rentFacilityColumn" />
+            
+        </columns>
+    </TableView>
+    
+</VBox>
