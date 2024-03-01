@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class UserService {
     private final DAO dao;
@@ -42,12 +43,10 @@ public class UserService {
 
         // Create 'coaches' table
         String createCoachTableSQL = "CREATE TABLE IF NOT EXISTS coaches (" +
-                "id INT AUTO_INCREMENT PRIMARY KEY," +
-                "nom VARCHAR(50) NOT NULL," +
-                "prenom VARCHAR(50) NOT NULL," +
-                "email VARCHAR(50) UNIQUE NOT NULL," +
-                "birthday VARCHAR(20) NOT NULL," +
-                "specialite VARCHAR(50) NOT NULL" +
+                "    id INT AUTO_INCREMENT PRIMARY KEY," +
+                "    specialty VARCHAR(100) NOT NULL," +
+                "    bio TEXT," +
+                "    availability VARCHAR(100)" +
                 ")";
         dao.executeQuery(createCoachTableSQL);
         System.out.println("Coach table created successfully.");
@@ -57,7 +56,7 @@ public class UserService {
     public void insertUser(User user) {
         String insertUserSQL = "INSERT INTO users (nom, prenom, email, birthday) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertUserSQL)) {
+        try (PreparedStatement preparedStatement = Objects.requireNonNull(DAO.getConnection()).prepareStatement(insertUserSQL)) {
             preparedStatement.setString(1, user.getNom());
             preparedStatement.setString(2, user.getPrenom());
             preparedStatement.setString(3, user.getEmail());
@@ -73,7 +72,7 @@ public class UserService {
     public void insertAdmin(Admin admin) {
         String insertAdminSQL = "INSERT INTO admins (nom, prenom, email, birthday, admin_id) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertAdminSQL)) {
+        try (PreparedStatement preparedStatement = Objects.requireNonNull(DAO.getConnection()).prepareStatement(insertAdminSQL)) {
             preparedStatement.setString(1, admin.getNom());
             preparedStatement.setString(2, admin.getPrenom());
             preparedStatement.setString(3, admin.getEmail());
@@ -92,14 +91,14 @@ public class UserService {
 
 
     public void insertCoach(Coach coach) {
-        String insertCoachSQL = "INSERT INTO coaches (nom, prenom, email, birthday, specialite) VALUES (?, ?, ?, ?, ?)";
+        String insertCoachSQL = "INSERT INTO coaches (id, specialty, bio, availability, courses) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertCoachSQL)) {
-            preparedStatement.setString(1, coach.getNom());
-            preparedStatement.setString(2, coach.getPrenom());
-            preparedStatement.setString(3, coach.getEmail());
-            preparedStatement.setString(4, coach.getBirthday());
-            preparedStatement.setString(5, coach.getSpecialite());
+        try (PreparedStatement preparedStatement = Objects.requireNonNull(DAO.getConnection()).prepareStatement(insertCoachSQL)) {
+            preparedStatement.setString(1, String.valueOf(coach.getId()));
+            preparedStatement.setString(2, coach.getSpecialty());
+            preparedStatement.setString(3, coach.getBio());
+            preparedStatement.setString(4, coach.getAvailability());
+            preparedStatement.setString(5, String.valueOf(coach.getCourses()));
 
             preparedStatement.executeUpdate();
             System.out.println("Coach inserted successfully.");
@@ -120,7 +119,7 @@ public class UserService {
         Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"));
         userService.insertAdmin(admin);
 
-        Coach coach = new Coach(null, "Coach", "Trainer", "coach@example.com", "1975-01-01", "Fitness");
+        Coach coach = new Coach(null, "Coach", "yoga", "monday", "stretching" );
         userService.insertCoach(coach);
     }
 }

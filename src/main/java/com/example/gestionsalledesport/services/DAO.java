@@ -7,7 +7,7 @@ import java.sql.Statement;
 public class DAO {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/sport";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "azizos";
+    private static final String DB_PASSWORD = "";
 
     public static Connection getConnection() {
         Connection conn;

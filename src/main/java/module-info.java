@@ -18,6 +18,6 @@ module com.example.gestionsalledesport {
     opens com.example.gestionsalledesport.controllers to javafx.fxml;
     opens com.example.gestionsalledesport.models;
     exports com.example.gestionsalledesport.services to junit;
-
+    exports com.example.gestionsalledesport.models;
 
 }
