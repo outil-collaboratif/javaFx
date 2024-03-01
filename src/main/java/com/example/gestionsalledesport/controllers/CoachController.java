@@ -4,11 +4,17 @@ import com.example.gestionsalledesport.models.Coach;
 import com.example.gestionsalledesport.models.Cours;
 import com.example.gestionsalledesport.services.CoachService;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,21 +136,27 @@ public class CoachController {
         return coursesList;
     }
 
+
+
+
+
     @FXML
-    private void handleShowCoachCourses() {
+    void handleShowCoachCourses(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CoachCoursesView.fxml"));
+            // Charger l'interface FXML pour ajouter un tournoi existant
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("coachCourseView.fxml"));
             Parent root = loader.load();
 
-            CoachController controller = loader.getController();
+            // Créer une nouvelle scène avec la racine chargée
+            Scene scene = new Scene(root);
 
-            controller.setCoachId(coachIdField.getText());
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            // Obtenir la scène actuelle à partir du bouton et changer sa racine
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            // Gérer les erreurs d'entrée/sortie si le chargement de l'interface échoue
         }
     }
 

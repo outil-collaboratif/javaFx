@@ -2,6 +2,7 @@ package com.example.gestionsalledesport.services;
 
 import com.example.gestionsalledesport.models.Admin;
 import com.example.gestionsalledesport.models.Coach;
+import com.example.gestionsalledesport.models.Cours;
 import com.example.gestionsalledesport.models.User;
 
 import java.math.BigDecimal;
@@ -127,7 +128,7 @@ public class UserService {
         Admin admin = new Admin(null, "Admin", "User", "admin@example.com", "1980-01-01", new BigInteger("12345"));
         userService.insertAdmin(admin);
         Cours legsCourse = new Cours();
-        List<Cours> coursesList = new ArrayList<>();
+       List<Cours> coursesList = new ArrayList<>();
         coursesList.add(legsCourse);
         Coach coach = new Coach(null, "ahmed", "sfar", "ahmedsfar@example.com", "yoga", "specialiste en stretching", "monday", coursesList );
         userService.insertCoach(coach);
