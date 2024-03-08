@@ -1,0 +1,66 @@
+.login-container {
+    -fx-background-color: #1B1B1B;
+}
+
+.form-container {
+    -fx-spacing: 15;
+    -fx-alignment: top_left;
+}
+
+.form-container Label {
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+}
+
+.form-container TextField {
+    -fx-pref-height: 35;
+    -fx-font-size: 1.2em;
+    -fx-border-color: black;
+    -fx-background-color: transparent;
+    -fx-border-width: 1;
+    -fx-text-fill: black;
+}
+
+.form-container PasswordField {
+    -fx-pref-height: 35;
+    -fx-font-size: 1.2em;
+    -fx-border-color: black;
+    -fx-background-color: transparent;
+    -fx-border-width: 1;
+    -fx-text-fill: black;
+}
+
+
+.form-container Button {
+    -fx-background-color: #56AB2F;
+    -fx-backgroun-radius: 30 0 0 30;
+    -fx-alignment: center;
+    -fx-padding: 10px 20px;
+}
+
+.form-container Pane {
+    -fx-alignment: center;
+}
+
+.form-container ComboBox {
+    -fx-pref-height: 35;
+    -fx-font-size: 1.2em;
+    -fx-border-color: black;
+    -fx-background-color: transparent;
+    -fx-border-width: 1;
+    -fx-prompt-text-fill:black;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: black;
+}
+
+.combo-box .list-cell:hover {
+    -fx-text-fill: white; /* Couleur du texte sélectionné */
+    -fx-background-color: #56ab2f; /* Couleur de fond sélectionnée */
+}
+
+.combo-box .list-cell:selected {
+    -fx-text-fill: black; /* Couleur du texte sélectionné */
+    -fx-background-color: transparent; /* Couleur de fond sélectionnée */
+}
