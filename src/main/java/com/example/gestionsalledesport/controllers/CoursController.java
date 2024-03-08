@@ -1,20 +1,12 @@
 package com.example.gestionsalledesport.controllers;
 
-import com.example.gestionsalledesport.HelloApplication;
 import com.example.gestionsalledesport.models.Cours;
 import com.example.gestionsalledesport.models.User;
 import com.example.gestionsalledesport.services.CoursService;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CoursController {
@@ -53,21 +45,6 @@ public class CoursController {
         clearFields();
         loadCours();
     }
-
-
-    @FXML
-    private void returnToMenu(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) dateField.getScene().getWindow(); // Use any field or element in the current scene
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
 
     @FXML
     private void updateCours() {

@@ -16,9 +16,6 @@
     <padding>
         <Insets bottom="30" left="30" right="30" top="30"/>
     </padding>
-    <HBox alignment="TOP_LEFT">
-        <Button text="Return to Dashboard" onAction="#returnToMenu"/>
-    </HBox>
 
     <VBox spacing="10" style="-fx-background-color: #f0f0f5; -fx-border-radius: 10px; -fx-padding: 20px;">
         <children>

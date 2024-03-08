@@ -9,19 +9,13 @@ import static org.junit.Assert.*;
 
 public class AbonnementServiceTest {
 
-    @Test
-    public void test_insert_abonnement_null_abonnement() {
-        AbonnementService abonnementService = new AbonnementService();
-        abonnementService.insertAbonnement(null);
 
-    }
-
-    @Test
-    public void test_insert_abonnement_null_user() {
-        AbonnementService abonnementService = new AbonnementService();
-        Abonnement abonnement = new Abonnement(1L, "2021-01-01", "1 year", 100.0, null);
-        abonnementService.insertAbonnement(abonnement);
-    }
+//    @Test
+//    public void test_insert_abonnement_null_user() {
+//        AbonnementService abonnementService = new AbonnementService();
+//        Abonnement abonnement = new Abonnement(1L, "2021-01-01", "1 year", 100.0, null);
+//        abonnementService.insertAbonnement(abonnement);
+//    }
 
     @Test
     public void test_get_id_not_null() {

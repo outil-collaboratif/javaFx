@@ -1,14 +1,13 @@
 package com.example.gestionsalledesport.services;
 
 import com.example.gestionsalledesport.models.Abonnement;
+import com.example.gestionsalledesport.models.AbonnementType;
 import com.example.gestionsalledesport.models.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;  
+import java.util.List;
 
 public class AbonnementService {
     private final DAO dao;
@@ -18,30 +17,33 @@ public class AbonnementService {
     }
 
     public void createAbonnementTable() {
-        // Create 'abonnements' table
         String createAbonnementTableSQL = "CREATE TABLE IF NOT EXISTS abonnements (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY," +
                 "date VARCHAR(20) NOT NULL," +
                 "duree VARCHAR(50) NOT NULL," +
                 "tarif DOUBLE NOT NULL," +
                 "user_id INT NOT NULL," +
+                "type ENUM('STUDENT', 'NORMAL') NOT NULL," +
                 "FOREIGN KEY (user_id) REFERENCES users(id)" +
                 ")";
         dao.executeQuery(createAbonnementTableSQL);
         System.out.println("Abonnements table created successfully.");
     }
 
+
     public void insertAbonnement(Abonnement abonnement) {
         if (abonnement == null) {
             throw new IllegalArgumentException("Abonnement object cannot be null");
         }
 
-        String insertAbonnementSQL = "INSERT INTO abonnements (date, duree, tarif, user_id) VALUES (?, ?, ?, ?)";
+        String insertAbonnementSQL = "INSERT INTO abonnements (date, duree, tarif, user_id, type) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(insertAbonnementSQL)) {
-            preparedStatement.setString(1, abonnement.getDate());
+            preparedStatement.setDate(1, Date.valueOf((abonnement.getDate())));
             preparedStatement.setString(2, abonnement.getDurée());
             preparedStatement.setDouble(3, abonnement.getTarif());
+            preparedStatement.setLong(4, abonnement.getUser().getId());
+            preparedStatement.setString(5, abonnement.getType().name()); // Store the enum name as a string
 
             // Check if User is not null before accessing its properties
             if (abonnement.getUser() != null) {
@@ -49,7 +51,6 @@ public class AbonnementService {
             } else {
                 preparedStatement.setNull(4, Types.NULL);
             }
-
             preparedStatement.executeUpdate();
             System.out.println("Abonnement inserted successfully.");
         } catch (SQLException e) {
@@ -58,18 +59,23 @@ public class AbonnementService {
     }
 
 
+    // Update operation
     public void updateAbonnement(Abonnement abonnement) {
-        String updateAbonnementSQL = "UPDATE abonnements SET date=?, duree=?, tarif=?, user_id=? WHERE id=?";
+        // Previous code...
+
+        String updateAbonnementSQL = "UPDATE abonnements SET date=?, duree=?, tarif=?, user_id=?, type=? WHERE id=?";
 
         try (PreparedStatement preparedStatement = dao.getConnection().prepareStatement(updateAbonnementSQL)) {
-            preparedStatement.setString(1, abonnement.getDate());
+            preparedStatement.setDate(1, Date.valueOf(abonnement.getDate()));
             preparedStatement.setString(2, abonnement.getDurée());
             preparedStatement.setDouble(3, abonnement.getTarif());
             preparedStatement.setLong(4, abonnement.getUser().getId());
-            preparedStatement.setLong(5, abonnement.getId());
+            preparedStatement.setString(5, abonnement.getType().name()); // Store the enum name as a string
+            preparedStatement.setLong(6, abonnement.getId());
 
             preparedStatement.executeUpdate();
             System.out.println("Abonnement updated successfully.");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,10 +102,11 @@ public class AbonnementService {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("abonnements.id");
-                String date = resultSet.getString("date");
+                LocalDate date = resultSet.getDate("date").toLocalDate();
                 String duree = resultSet.getString("duree");
                 double tarif = resultSet.getDouble("tarif");
                 long userId = resultSet.getLong("user_id");
+                AbonnementType type = AbonnementType.valueOf(resultSet.getString("type"));
 
                 // Construct User object
                 User user = new User(
@@ -111,7 +118,7 @@ public class AbonnementService {
 
                 );
 
-                Abonnement abonnement = new Abonnement(id, date, duree, tarif, user);
+                Abonnement abonnement = new Abonnement(id, date, duree, tarif, user,type);
 
                 abonnements.add(abonnement);
             }
